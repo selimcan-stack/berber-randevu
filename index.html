@@ -29,7 +29,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 
 /* LOGIN */
 .login-screen{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:800;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
-.login-card{background:#1a1a1a;border:1px solid var(--border);border-radius:20px;padding:36px 32px;width:90%;max-width:360px;text-align:center}
+.login-card{border-radius:20px;padding:36px 32px;width:90%;max-width:360px;text-align:center;border:2px solid transparent;background-image:linear-gradient(#1a1a1a,#1a1a1a),conic-gradient(from var(--gb-angle),#0a0514 0%,#5b21b6 20%,#8b5cf6 40%,#c4b5fd 50%,#8b5cf6 60%,#5b21b6 80%,#0a0514 100%);background-clip:padding-box,border-box;background-origin:padding-box,border-box;animation:gb-spin 6s linear infinite}
 .login-icon{width:56px;height:56px;border-radius:50%;background:rgba(139,92,246,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
 .login-icon svg{width:28px;height:28px;stroke:var(--purple);fill:none;stroke-width:2}
 .login-title{font-size:20px;font-weight:700;margin-bottom:6px}
@@ -88,7 +88,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 .service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:32px}
 .service-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all 0.2s}
 .service-card:hover{border-color:var(--purple);background:#1a1a1a}
-.service-card.selected{border-color:var(--purple);background:rgba(139,92,246,0.08)}
+.service-card.selected{border:2px solid transparent;background-image:linear-gradient(rgba(139,92,246,0.1),rgba(139,92,246,0.1)),conic-gradient(from var(--gb-angle),#0a0514 0%,#5b21b6 20%,#8b5cf6 40%,#c4b5fd 50%,#8b5cf6 60%,#5b21b6 80%,#0a0514 100%);background-clip:padding-box,border-box;background-origin:padding-box,border-box;animation:gb-spin 3s linear infinite}
 .service-color-dot{width:10px;height:10px;border-radius:50%;margin-bottom:10px}
 .service-card-name{font-size:14px;font-weight:600;margin-bottom:4px}
 .service-card-meta{font-size:12px;color:var(--muted)}
@@ -145,7 +145,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 
 /* SUCCESS */
 .booking-success{text-align:center;padding:60px 20px}
-.success-circle{width:72px;height:72px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.success-circle{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;border:2px solid transparent;background-image:linear-gradient(rgba(16,185,129,0.15),rgba(16,185,129,0.15)),conic-gradient(from var(--gb-angle),#022c1e 0%,#059669 30%,#34d399 50%,#059669 70%,#022c1e 100%);background-clip:padding-box,border-box;background-origin:padding-box,border-box;animation:gb-spin 4s linear infinite}
 .success-circle svg{width:36px;height:36px;stroke:var(--green);fill:none;stroke-width:2.5}
 
 /* ==================== ADMIN PAGE ==================== */
@@ -289,6 +289,15 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
   #adminPage{flex-direction:column}
   .admin-main-layout{grid-template-columns:1fr}
 }
+
+/* ===== ANİMASYONLU GRADİENT BORDER ===== */
+@property --gb-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes gb-spin { to { --gb-angle: 360deg; } }
+
 </style>
 </head>
 <body>
@@ -312,7 +321,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 <!-- ========== BOOKING PAGE ========== -->
 <div id="bookingPage" class="view">
   <nav class="top-nav">
-    <div class="nav-logo">✂️ <span id="bookingLogoName">Paradise</span></div>
+    <div class="nav-logo">✂️ <span id="bookingLogoName">Berber</span></div>
     <div class="nav-links">
       <button class="nav-link active" onclick="navigate('booking')">Randevu Al</button>
     </div>
