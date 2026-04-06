@@ -15,7 +15,7 @@
   --green:#10b981;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;
   --radius:12px;
 }
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;background-image:radial-gradient(ellipse 120% 35% at 50% 0%,rgba(139,92,246,0.09) 0%,transparent 70%)}
 button{font-family:'DM Sans',sans-serif;cursor:pointer;border:none;outline:none}
 input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 .view{display:none;min-height:100vh}
@@ -29,7 +29,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 
 /* LOGIN */
 .login-screen{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:800;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
-.login-card{background:#1a1a1a;border:1px solid var(--border);border-radius:20px;padding:36px 32px;width:90%;max-width:360px;text-align:center}
+.login-card{background:#1a1a1a;border:1px solid rgba(139,92,246,0.2);border-radius:20px;padding:36px 32px;width:90%;max-width:360px;text-align:center;box-shadow:0 0 60px rgba(139,92,246,0.1),0 24px 48px rgba(0,0,0,0.4)}
 .login-icon{width:56px;height:56px;border-radius:50%;background:rgba(139,92,246,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
 .login-icon svg{width:28px;height:28px;stroke:var(--purple);fill:none;stroke-width:2}
 .login-title{font-size:20px;font-weight:700;margin-bottom:6px}
@@ -43,7 +43,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 .login-back:hover{color:var(--text)}
 
 /* TOP NAV */
-.top-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.top-nav{background:rgba(10,10,10,0.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(139,92,246,0.1);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
 .nav-logo{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
 .nav-logo span{color:var(--purple)}
 .nav-links{display:flex;gap:4px}
@@ -67,34 +67,43 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 
 /* ==================== BOOKING PAGE ==================== */
 #bookingPage{background:var(--bg)}
-.booking-hero{background:linear-gradient(135deg,#1a0533 0%,#0a0a0a 60%);padding:60px 24px;text-align:center;border-bottom:1px solid var(--border)}
-.booking-hero h1{font-size:32px;font-weight:700;margin-bottom:8px}
-.booking-hero h1 span{color:var(--purple)}
-.booking-hero p{font-size:15px;color:var(--muted);margin-bottom:24px}
-.booking-hero-info{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
-.hero-info-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
-.hero-info-item svg{width:15px;height:15px;stroke:var(--purple);fill:none;stroke-width:2}
+.booking-hero{position:relative;overflow:hidden;padding:80px 24px 64px;text-align:center;border-bottom:1px solid rgba(139,92,246,0.15);background:linear-gradient(180deg,rgba(16,4,38,0.95) 0%,var(--bg) 100%)}
+.booking-hero::before{content:'';position:absolute;width:650px;height:650px;background:radial-gradient(circle,rgba(139,92,246,0.22) 0%,transparent 60%);top:-200px;left:-80px;pointer-events:none;animation:heroFloat 9s ease-in-out infinite}
+.booking-hero::after{content:'';position:absolute;width:450px;height:450px;background:radial-gradient(circle,rgba(167,139,250,0.12) 0%,transparent 60%);bottom:-120px;right:8%;pointer-events:none;animation:heroFloat 11s ease-in-out infinite reverse}
+@keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-28px)}}
+.booking-hero>*{position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.28);border-radius:100px;padding:5px 16px;font-size:12px;font-weight:500;color:var(--purple2);margin-bottom:18px;letter-spacing:0.4px}
+.hero-deco{position:absolute;right:6%;top:50%;transform:translateY(-50%) rotate(-12deg);width:240px;height:240px;opacity:0.035;pointer-events:none;z-index:0}
+.hero-deco svg{width:100%;height:100%;stroke:white;fill:none;stroke-width:1}
+.booking-hero h1{font-size:38px;font-weight:700;margin-bottom:10px;letter-spacing:-0.5px}
+.booking-hero h1 span{color:var(--purple2)}
+.booking-hero p{font-size:15px;color:var(--muted);margin-bottom:28px}
+.booking-hero-info{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.hero-info-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:6px 14px;transition:border-color 0.2s}
+.hero-info-item:hover{border-color:rgba(139,92,246,0.3);color:var(--text)}
+.hero-info-item svg{width:14px;height:14px;stroke:var(--purple2);fill:none;stroke-width:2;flex-shrink:0}
 
-.booking-body{max-width:900px;margin:0 auto;padding:40px 24px}
+.booking-body{max-width:900px;margin:0 auto;padding:40px 24px 60px}
 .booking-steps{display:flex;gap:8px;margin-bottom:32px;justify-content:center}
 .step{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
 .step-num{width:28px;height:28px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-.step.active .step-num{background:var(--purple);border-color:var(--purple);color:white}
+.step.active .step-num{background:var(--purple);border-color:var(--purple);color:white;box-shadow:0 0 14px rgba(139,92,246,0.45)}
 .step.active{color:var(--text)}
 .step.done .step-num{background:var(--green);border-color:var(--green);color:white}
-.step-sep{width:32px;height:1px;background:var(--border);flex-shrink:0}
+.step-sep{width:32px;height:1px;background:var(--border);flex-shrink:0;transition:background 0.3s}
+.step.done + .step-sep{background:rgba(139,92,246,0.35)}
 
 /* STEP 1: SERVICE */
 .service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:32px}
 .service-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all 0.2s}
-.service-card:hover{border-color:var(--purple);background:#1a1a1a}
-.service-card.selected{border-color:var(--purple);background:rgba(139,92,246,0.08)}
+.service-card:hover{border-color:rgba(139,92,246,0.6);background:#1a1a1a;box-shadow:0 4px 20px rgba(139,92,246,0.08)}
+.service-card.selected{border-color:var(--purple);background:rgba(139,92,246,0.1);box-shadow:0 0 0 1px rgba(139,92,246,0.2),0 8px 28px rgba(139,92,246,0.14)}
 
 /* STEP 2: STAFF */
 .staff-booking-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:32px}
 .staff-booking-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:20px 16px;cursor:pointer;transition:all 0.2s;text-align:center}
-.staff-booking-card:hover{border-color:var(--purple);background:#1a1a1a}
-.staff-booking-card.selected{border-color:var(--purple);background:rgba(139,92,246,0.08)}
+.staff-booking-card:hover{border-color:rgba(139,92,246,0.6);background:#1a1a1a;box-shadow:0 4px 20px rgba(139,92,246,0.08)}
+.staff-booking-card.selected{border-color:var(--purple);background:rgba(139,92,246,0.1);box-shadow:0 0 0 1px rgba(139,92,246,0.2),0 8px 28px rgba(139,92,246,0.14)}
 .staff-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:18px;font-weight:700;color:white}
 .staff-booking-name{font-size:14px;font-weight:600}
 .staff-booking-meta{font-size:11px;color:var(--muted);margin-top:3px}
@@ -146,7 +155,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 @media(max-width:500px){.form-row{grid-template-columns:1fr}}
 
 /* BOOKING SUMMARY */
-.booking-summary{background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.2);border-radius:var(--radius);padding:16px;margin-bottom:20px}
+.booking-summary{background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.22);border-radius:var(--radius);padding:16px;margin-bottom:20px;box-shadow:0 0 24px rgba(139,92,246,0.06)}
 .summary-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px}
 .summary-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,0.05)}
 .summary-label{color:var(--muted)}
@@ -336,6 +345,8 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
   </nav>
 
   <div class="booking-hero">
+    <div class="hero-deco"><svg viewBox="0 0 100 100"><circle cx="22" cy="28" r="14"/><circle cx="22" cy="72" r="14"/><line x1="33" y1="20" x2="88" y2="75"/><line x1="33" y1="80" x2="88" y2="25"/><line x1="33" y1="33" x2="50" y2="50"/><line x1="33" y1="67" x2="50" y2="50"/></svg></div>
+    <div class="hero-badge"><svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Online Randevu Sistemi</div>
     <h1>Online <span>Randevu</span> Al</h1>
     <p id="heroDesc">Hızlı ve kolay randevu sistemi</p>
     <div class="booking-hero-info">
