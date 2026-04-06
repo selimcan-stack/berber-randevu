@@ -89,6 +89,15 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
 .service-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all 0.2s}
 .service-card:hover{border-color:var(--purple);background:#1a1a1a}
 .service-card.selected{border-color:var(--purple);background:rgba(139,92,246,0.08)}
+
+/* STEP 2: STAFF */
+.staff-booking-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:32px}
+.staff-booking-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:20px 16px;cursor:pointer;transition:all 0.2s;text-align:center}
+.staff-booking-card:hover{border-color:var(--purple);background:#1a1a1a}
+.staff-booking-card.selected{border-color:var(--purple);background:rgba(139,92,246,0.08)}
+.staff-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:18px;font-weight:700;color:white}
+.staff-booking-name{font-size:14px;font-weight:600}
+.staff-booking-meta{font-size:11px;color:var(--muted);margin-top:3px}
 .service-color-dot{width:10px;height:10px;border-radius:50%;margin-bottom:10px}
 .service-card-name{font-size:14px;font-weight:600;margin-bottom:4px}
 .service-card-meta{font-size:12px;color:var(--muted)}
@@ -341,9 +350,11 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
     <div class="booking-steps" id="bookingSteps">
       <div class="step active" id="step1"><div class="step-num">1</div><span>Hizmet Seç</span></div>
       <div class="step-sep"></div>
-      <div class="step" id="step2"><div class="step-num">2</div><span>Tarih & Saat</span></div>
+      <div class="step" id="step2"><div class="step-num">2</div><span>Personel Seç</span></div>
       <div class="step-sep"></div>
-      <div class="step" id="step3"><div class="step-num">3</div><span>Bilgilerini Gir</span></div>
+      <div class="step" id="step3"><div class="step-num">3</div><span>Tarih & Saat</span></div>
+      <div class="step-sep"></div>
+      <div class="step" id="step4"><div class="step-num">4</div><span>Bilgilerini Gir</span></div>
     </div>
 
     <!-- STEP 1 -->
@@ -352,8 +363,17 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
       <div class="service-grid" id="serviceGrid"></div>
     </div>
 
-    <!-- STEP 2 -->
+    <!-- STEP 2: STAFF -->
     <div id="bStep2" style="display:none">
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:16px">Personel seçin</h3>
+      <div class="staff-booking-grid" id="staffBookingGrid"></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost" onclick="goToStep(1)">← Geri</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: DATE/TIME -->
+    <div id="bStep3" style="display:none">
       <h3 style="font-size:16px;font-weight:600;margin-bottom:16px">Tarih ve saat seçin</h3>
       <div class="datetime-grid">
         <div>
@@ -379,13 +399,13 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
         </div>
       </div>
       <div style="display:flex;gap:10px">
-        <button class="btn btn-ghost" onclick="goToStep(1)">← Geri</button>
-        <button class="btn btn-purple" id="step2Next" onclick="goToStep(3)" disabled>Devam Et →</button>
+        <button class="btn btn-ghost" onclick="goToStep(2)">← Geri</button>
+        <button class="btn btn-purple" id="step3Next" onclick="goToStep(4)" disabled>Devam Et →</button>
       </div>
     </div>
 
-    <!-- STEP 3 -->
-    <div id="bStep3" style="display:none">
+    <!-- STEP 4: INFO -->
+    <div id="bStep4" style="display:none">
       <h3 style="font-size:16px;font-weight:600;margin-bottom:16px">Bilgilerinizi girin</h3>
       <div class="booking-summary" id="bookingSummary"></div>
       <div class="booking-form">
@@ -397,7 +417,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
         <div class="form-group"><label class="form-label">Notlar (opsiyonel)</label><textarea class="form-input" id="bNotes" placeholder="Eklemek istediğiniz notlar..." rows="3" style="resize:vertical"></textarea></div>
       </div>
       <div style="display:flex;gap:10px">
-        <button class="btn btn-ghost" onclick="goToStep(2)">← Geri</button>
+        <button class="btn btn-ghost" onclick="goToStep(3)">← Geri</button>
         <button class="btn btn-purple" onclick="submitBooking()">
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           Randevu Oluştur
@@ -413,6 +433,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
         <p style="color:var(--muted);margin-bottom:8px" id="successDesc">Randevu detayları aşağıda</p>
         <div class="booking-summary" id="successSummary" style="max-width:360px;margin:24px auto 0"></div>
         <button class="btn btn-purple" style="margin-top:24px" onclick="resetBooking()">Yeni Randevu Al</button>
+        <p style="font-size:12px;color:var(--muted);margin-top:12px">Randevunuz onay bekliyor. Berberiniz sizi onaylayacaktır.</p>
       </div>
     </div>
   </div>
@@ -437,6 +458,9 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
       </div>
       <div class="admin-nav-item" onclick="showAdminView('services',this)">
         <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Hizmetler
+      </div>
+      <div class="admin-nav-item" onclick="showAdminView('staff',this)">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Personel
       </div>
       <div class="admin-nav-item" onclick="showAdminView('settings',this)">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Ayarlar
@@ -525,6 +549,18 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
       <div class="services-grid" id="servicesGrid"></div>
     </div>
 
+    <!-- STAFF -->
+    <div class="admin-view" id="av-staff">
+      <div class="admin-view-title">
+        Personel
+        <button class="btn btn-purple" onclick="openStaffModal()">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Yeni Personel
+        </button>
+      </div>
+      <div class="services-grid" id="staffGrid"></div>
+    </div>
+
     <!-- SETTINGS -->
     <div class="admin-view" id="av-settings">
       <div class="admin-view-title">Ayarlar</div>
@@ -593,6 +629,37 @@ input,select,textarea{font-family:'DM Sans',sans-serif;outline:none}
   </div>
 </div>
 
+<!-- STAFF MODAL -->
+<div class="modal-overlay" id="staffModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <span class="modal-title" id="staffModalTitle">Yeni Personel</span>
+      <button class="modal-close" onclick="closeModal('staffModal')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="form-group"><label class="form-label">Ad Soyad *</label><input type="text" class="form-input" id="stName" placeholder="Ahmet Usta"></div>
+    <div class="form-group"><label class="form-label">Renk</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px" id="staffColorPicker"></div>
+    </div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--muted)">ÇALIŞMA SAATLERİ</div>
+      <div class="settings-grid" style="margin-bottom:12px">
+        <div class="setting-group"><label class="setting-label">Açılış</label><input type="time" class="setting-input" id="st_start" value="09:00"></div>
+        <div class="setting-group"><label class="setting-label">Kapanış</label><input type="time" class="setting-input" id="st_end" value="19:00"></div>
+        <div class="setting-group"><label class="setting-label">Öğle Başlangıcı</label><input type="time" class="setting-input" id="st_lstart" value="13:00"></div>
+        <div class="setting-group"><label class="setting-label">Öğle Bitişi</label><input type="time" class="setting-input" id="st_lend" value="14:00"></div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">Çalışma Günleri</label>
+        <div class="days-grid" id="staffDaysGrid" style="margin-top:8px"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('staffModal')">İptal</button>
+      <button class="btn btn-purple" onclick="saveStaff()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -602,13 +669,13 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
 // ===== STATE =====
-let appointments=[], services=[], settings={};
+let appointments=[], services=[], settings={}, staff=[];
 let currentPage='booking', isAdmin=false;
 let weekOffset=0;
-let bookingState={step:1,serviceId:null,date:null,time:null};
+let bookingState={step:1,serviceId:null,staffId:null,date:null,time:null};
 let bookingCalMonth=new Date();
-let editingSvcId=null;
-let selectedColor='#8b5cf6';
+let editingSvcId=null, editingStaffId=null;
+let selectedColor='#8b5cf6', selectedStaffColor='#3b82f6';
 
 const COLORS=['#3b82f6','#10b981','#8b5cf6','#f59e0b','#ec4899','#ef4444','#6b7280','#14b8a6'];
 const DAY_NAMES=['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
@@ -628,14 +695,21 @@ function minsToTime(m){return String(Math.floor(m/60)).padStart(2,'0')+':'+Strin
 
 // ===== DATA =====
 async function fetchAll(){
-  const [aRes,sRes,setRes]=await Promise.all([
+  const [aRes,sRes,setRes,stRes]=await Promise.all([
     sb.from('appointments').select('*').order('date').order('time'),
     sb.from('services').select('*').order('sort_order'),
-    sb.from('barber_settings').select('*')
+    sb.from('barber_settings').select('*'),
+    sb.from('staff').select('*').order('sort_order')
   ]);
   appointments=aRes.data||[];
   services=sRes.data||[];
+  staff=stRes.data||[];
   const s={};(setRes.data||[]).forEach(r=>s[r.key]=r.value);settings=s;
+}
+
+async function refetchStaff(){
+  const {data}=await sb.from('staff').select('*').order('sort_order');
+  staff=data||[];
 }
 
 async function refetchAppointments(){
@@ -644,41 +718,68 @@ async function refetchAppointments(){
 }
 
 // ===== SETTINGS HELPERS =====
-function getWorkingStart(){return settings.working_start||'09:00'}
-function getWorkingEnd(){return settings.working_end||'19:00'}
-function getLunchStart(){return settings.lunch_start||'13:00'}
-function getLunchEnd(){return settings.lunch_end||'14:00'}
+function getWorkingStart(s=null){return s?s.working_start||'09:00':settings.working_start||'09:00'}
+function getWorkingEnd(s=null){return s?s.working_end||'19:00':settings.working_end||'19:00'}
+function getLunchStart(s=null){return s?s.lunch_start||'13:00':settings.lunch_start||'13:00'}
+function getLunchEnd(s=null){return s?s.lunch_end||'14:00':settings.lunch_end||'14:00'}
 function getSlotDur(){return parseInt(settings.slot_duration||'30')}
-function getWorkingDays(){return (settings.working_days||'1,2,3,4,5,6').split(',').map(Number)}
+function getWorkingDays(s=null){
+  const v=s?s.working_days||'1,2,3,4,5,6':settings.working_days||'1,2,3,4,5,6';
+  return v.split(',').map(Number);
+}
+function getStaff(id){return staff.find(s=>s.id===id)||null}
 
-function isWorkingDay(dateStr){
+function isWorkingDay(dateStr,s=null){
   const d=new Date(dateStr+'T12:00:00');
-  const dow=d.getDay();// 0=sun,1=mon,...
-  const jsToMon=dow===0?7:dow;// convert to 1=mon...7=sun
-  return getWorkingDays().includes(jsToMon);
+  const dow=d.getDay();
+  const jsToMon=dow===0?7:dow;
+  if(s)return getWorkingDays(s).includes(jsToMon);
+  // if no staff specified: working if ANY active staff works that day
+  const activeStaff=staff.filter(x=>x.active);
+  if(activeStaff.length===0)return getWorkingDays().includes(jsToMon);
+  return activeStaff.some(x=>getWorkingDays(x).includes(jsToMon));
 }
 
-function isLunch(timeStr){
+function isLunch(timeStr,s=null){
   const t=timeToMins(timeStr);
-  return t>=timeToMins(getLunchStart())&&t<timeToMins(getLunchEnd());
+  return t>=timeToMins(getLunchStart(s))&&t<timeToMins(getLunchEnd(s));
 }
 
-function getSlots(dateStr){
+function getSlots(dateStr,s=null){
   const slots=[];
-  let t=timeToMins(getWorkingStart());
-  const end=timeToMins(getWorkingEnd());
+  let t=timeToMins(getWorkingStart(s));
+  const end=timeToMins(getWorkingEnd(s));
   const dur=getSlotDur();
-  while(t<end){
-    slots.push(minsToTime(t));
-    t+=dur;
-  }
+  while(t<end){slots.push(minsToTime(t));t+=dur;}
   return slots;
 }
 
-function isTaken(dateStr, timeStr, excludeId=null){
-  return appointments.some(a=>
-    a.date===dateStr&&a.time===timeStr&&a.status!=='iptal'&&a.id!==excludeId
-  );
+// staffId=null means "fark etmez" — slot is taken only if ALL active staff are booked
+function isTaken(dateStr,timeStr,staffId=null,excludeId=null){
+  if(staffId){
+    return appointments.some(a=>a.date===dateStr&&a.time===timeStr&&a.staff_id===staffId&&a.status!=='iptal'&&a.id!==excludeId);
+  }
+  // "fark etmez": check if at least one staff is free
+  const activeStaff=staff.filter(x=>x.active);
+  if(activeStaff.length===0){
+    return appointments.some(a=>a.date===dateStr&&a.time===timeStr&&a.status!=='iptal'&&a.id!==excludeId);
+  }
+  return activeStaff.every(x=>appointments.some(a=>a.date===dateStr&&a.time===timeStr&&a.staff_id===x.id&&a.status!=='iptal'&&a.id!==excludeId));
+}
+
+function autoAssignStaff(dateStr,timeStr){
+  const activeStaff=staff.filter(x=>x.active);
+  if(!activeStaff.length)return null;
+  const free=activeStaff.filter(x=>!appointments.some(a=>a.date===dateStr&&a.time===timeStr&&a.staff_id===x.id&&a.status!=='iptal'));
+  if(!free.length)return null;
+  // assign least busy today
+  const today=todayStr();
+  free.sort((a,b)=>{
+    const aCount=appointments.filter(x=>x.date===today&&x.staff_id===a.id&&x.status!=='iptal').length;
+    const bCount=appointments.filter(x=>x.date===today&&x.staff_id===b.id&&x.status!=='iptal').length;
+    return aCount-bCount;
+  });
+  return free[0].id;
 }
 
 // ===== NAVIGATE =====
@@ -750,14 +851,41 @@ function goToStep(n){
   document.getElementById('bStep1').style.display=n===1?'block':'none';
   document.getElementById('bStep2').style.display=n===2?'block':'none';
   document.getElementById('bStep3').style.display=n===3?'block':'none';
+  document.getElementById('bStep4').style.display=n===4?'block':'none';
   document.getElementById('bSuccess').style.display='none';
-  [1,2,3].forEach(i=>{
+  [1,2,3,4].forEach(i=>{
     const el=document.getElementById('step'+i);
-    el.className='step'+(i<n?' done':i===n?' active':'');
+    if(el)el.className='step'+(i<n?' done':i===n?' active':'');
   });
-  if(n===2){renderBookingCal();if(bookingState.date)renderTimeSlots(bookingState.date);}
-  if(n===3)renderBookingSummary();
+  if(n===2)renderStaffBookingGrid();
+  if(n===3){renderBookingCal();if(bookingState.date)renderTimeSlots(bookingState.date);}
+  if(n===4)renderBookingSummary();
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== STAFF SELECTION IN BOOKING =====
+function renderStaffBookingGrid(){
+  const activeStaff=staff.filter(s=>s.active);
+  const grid=document.getElementById('staffBookingGrid');
+  const anyCard=`<div class="staff-booking-card ${bookingState.staffId===null?'selected':''}" onclick="selectBookingStaff(null)">
+    <div class="staff-avatar" style="background:#555;font-size:24px">✂️</div>
+    <div class="staff-booking-name">Fark Etmez</div>
+    <div class="staff-booking-meta">İlk müsait personel</div>
+  </div>`;
+  const staffCards=activeStaff.map(s=>`
+    <div class="staff-booking-card ${bookingState.staffId===s.id?'selected':''}" onclick="selectBookingStaff(${s.id})">
+      <div class="staff-avatar" style="background:${s.color}">${s.name.charAt(0).toUpperCase()}</div>
+      <div class="staff-booking-name">${s.name}</div>
+      <div class="staff-booking-meta">${getWorkingStart(s)} - ${getWorkingEnd(s)}</div>
+    </div>`).join('');
+  grid.innerHTML=anyCard+staffCards;
+}
+
+function selectBookingStaff(id){
+  bookingState.staffId=id;
+  bookingState.date=null;bookingState.time=null;
+  renderStaffBookingGrid();
+  setTimeout(()=>goToStep(3),200);
 }
 
 // BOOKING CALENDAR
@@ -766,16 +894,17 @@ function renderBookingCal(){
   const y=now.getFullYear(),m=now.getMonth();
   document.getElementById('bookingCalMonth').textContent=now.toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
   const first=new Date(y,m,1);
-  const startDow=first.getDay()===0?6:first.getDay()-1;// 0=mon
+  const startDow=first.getDay()===0?6:first.getDay()-1;
   const daysInMonth=new Date(y,m+1,0).getDate();
   const today=todayStr();
+  const selectedStaff=bookingState.staffId?getStaff(bookingState.staffId):null;
   const grid=document.getElementById('bookingCalDays');
   grid.innerHTML='';
   for(let i=0;i<startDow;i++){const d=document.createElement('button');d.className='cal-day empty';d.textContent='';grid.appendChild(d);}
   for(let day=1;day<=daysInMonth;day++){
     const dateStr=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
     const isPast=dateStr<today;
-    const isWorking=isWorkingDay(dateStr);
+    const isWorking=isWorkingDay(dateStr,selectedStaff);
     const btn=document.createElement('button');
     btn.className='cal-day'+(dateStr===today?' today':'')+(dateStr===bookingState.date?' selected':'')+(isPast||!isWorking?' disabled':'');
     btn.textContent=day;
@@ -789,32 +918,36 @@ function nextBookingMonth(){bookingCalMonth=new Date(bookingCalMonth.getFullYear
 
 function selectBookingDate(dateStr){
   bookingState.date=dateStr;bookingState.time=null;
-  document.getElementById('step2Next').disabled=true;
+  document.getElementById('step3Next').disabled=true;
   renderBookingCal();
   renderTimeSlots(dateStr);
 }
 
 function renderTimeSlots(dateStr){
-  const svc=getService(bookingState.serviceId);
-  const slots=getSlots(dateStr);
+  const selectedStaff=bookingState.staffId?getStaff(bookingState.staffId):null;
+  const slots=getSlots(dateStr,selectedStaff);
   const container=document.getElementById('timeSlots');
   if(!slots.length){container.innerHTML='<div class="time-slots-empty">Bu gün için slot yok</div>';return;}
-  container.innerHTML='<div class="slots-grid">'+slots.filter(t=>!isLunch(t)).map(t=>{
-    const taken=isTaken(dateStr,t);
+  const filtered=slots.filter(t=>!isLunch(t,selectedStaff));
+  if(!filtered.length){container.innerHTML='<div class="time-slots-empty">Müsait saat yok</div>';return;}
+  container.innerHTML='<div class="slots-grid">'+filtered.map(t=>{
+    const taken=isTaken(dateStr,t,bookingState.staffId);
     return `<button class="slot-btn ${taken?'taken':''} ${bookingState.time===t?'selected':''}" onclick="${taken?'':'selectSlot(\''+t+'\')'}">${t}</button>`;
   }).join('')+'</div>';
 }
 
 function selectSlot(time){
   bookingState.time=time;
-  document.getElementById('step2Next').disabled=false;
+  document.getElementById('step3Next').disabled=false;
   renderTimeSlots(bookingState.date);
 }
 
 function renderBookingSummary(){
   const svc=getService(bookingState.serviceId);
+  const st=bookingState.staffId?getStaff(bookingState.staffId):null;
   document.getElementById('bookingSummary').innerHTML=`
     <div class="summary-row"><span class="summary-label">Hizmet</span><span class="summary-val">${svc.name||'-'}</span></div>
+    <div class="summary-row"><span class="summary-label">Personel</span><span class="summary-val">${st?st.name:'Fark Etmez'}</span></div>
     <div class="summary-row"><span class="summary-label">Tarih</span><span class="summary-val">${fmtDate(bookingState.date)}</span></div>
     <div class="summary-row"><span class="summary-label">Saat</span><span class="summary-val">${bookingState.time}</span></div>
     <div class="summary-row"><span class="summary-label">Süre</span><span class="summary-val">${svc.duration} dakika</span></div>
@@ -826,11 +959,23 @@ async function submitBooking(){
   const phone=document.getElementById('bPhone').value.trim();
   if(!name||!phone){showToast('Ad ve telefon zorunlu.','#ef4444');return;}
   if(!bookingState.serviceId||!bookingState.date||!bookingState.time){showToast('Lütfen tüm adımları tamamlayın.','#ef4444');return;}
-  if(isTaken(bookingState.date,bookingState.time)){showToast('Bu saat dolu, lütfen başka bir saat seçin.','#ef4444');goToStep(2);return;}
+  // determine final staffId
+  let finalStaffId=bookingState.staffId;
+  if(!finalStaffId){
+    finalStaffId=autoAssignStaff(bookingState.date,bookingState.time);
+    if(finalStaffId===null&&staff.filter(x=>x.active).length>0){
+      showToast('Bu saat dolu, lütfen başka bir saat seçin.','#ef4444');goToStep(3);return;
+    }
+  } else {
+    if(isTaken(bookingState.date,bookingState.time,finalStaffId)){
+      showToast('Bu saat dolu, lütfen başka bir saat seçin.','#ef4444');goToStep(3);return;
+    }
+  }
   const appt={
     id:genId(),customer_name:name,customer_phone:phone,
     customer_email:document.getElementById('bEmail').value.trim(),
-    service_id:bookingState.serviceId,date:bookingState.date,time:bookingState.time,
+    service_id:bookingState.serviceId,staff_id:finalStaffId,
+    date:bookingState.date,time:bookingState.time,
     status:'beklemede',notes:document.getElementById('bNotes').value.trim(),
     created_at:Date.now()
   };
@@ -838,19 +983,21 @@ async function submitBooking(){
   if(error){showToast('Hata oluştu, tekrar deneyin.','#ef4444');return;}
   appointments.push(appt);
   const svc=getService(bookingState.serviceId);
+  const st=finalStaffId?getStaff(finalStaffId):null;
   document.getElementById('successDesc').textContent=`${fmtDate(bookingState.date)} - ${bookingState.time}`;
   document.getElementById('successSummary').innerHTML=`
     <div class="summary-row"><span class="summary-label">Hizmet</span><span class="summary-val">${svc.name}</span></div>
+    ${st?`<div class="summary-row"><span class="summary-label">Personel</span><span class="summary-val">${st.name}</span></div>`:''}
     <div class="summary-row"><span class="summary-label">Tarih</span><span class="summary-val">${fmtDate(bookingState.date)}</span></div>
     <div class="summary-row"><span class="summary-label">Saat</span><span class="summary-val">${bookingState.time}</span></div>
     <div class="summary-row"><span class="summary-label">Ücret</span><span class="summary-val" style="color:var(--purple)">${fmt(svc.price)}</span></div>`;
-  document.getElementById('bStep3').style.display='none';
+  document.getElementById('bStep4').style.display='none';
   document.getElementById('bSuccess').style.display='block';
-  [1,2,3].forEach(i=>document.getElementById('step'+i).className='step done');
+  [1,2,3,4].forEach(i=>{const el=document.getElementById('step'+i);if(el)el.className='step done';});
 }
 
 function resetBooking(){
-  bookingState={step:1,serviceId:null,date:null,time:null};
+  bookingState={step:1,serviceId:null,staffId:null,date:null,time:null};
   document.getElementById('bName').value='';document.getElementById('bPhone').value='';
   document.getElementById('bEmail').value='';document.getElementById('bNotes').value='';
   document.getElementById('bSuccess').style.display='none';
@@ -982,17 +1129,19 @@ function renderApptList(){
   list.sort((a,b)=>b.created_at-a.created_at);
   const sCls={onaylandi:'badge-onaylandi',beklemede:'badge-beklemede',iptal:'badge-iptal'};
   const sLabel={onaylandi:'Onaylandı',beklemede:'Beklemede',iptal:'İptal'};
-  document.getElementById('apptTable').innerHTML=`<thead><tr><th>Müşteri</th><th>Hizmet</th><th>Tarih</th><th>Saat</th><th>Durum</th><th>Telefon</th><th></th></tr></thead><tbody>`+
+  document.getElementById('apptTable').innerHTML=`<thead><tr><th>Müşteri</th><th>Hizmet</th><th>Personel</th><th>Tarih</th><th>Saat</th><th>Durum</th><th>Telefon</th><th></th></tr></thead><tbody>`+
     (list.length?list.map(a=>{
       const svc=getService(a.service_id);
-      return `<tr><td style="font-weight:600">${a.customer_name}</td><td>${svc.name||'-'}</td><td>${fmtDate(a.date)}</td><td>${a.time}</td><td><span class="status-badge ${sCls[a.status]}">${sLabel[a.status]}</span></td><td style="color:var(--muted)">${a.customer_phone}</td><td><button onclick="openApptDetail('${a.id}')" style="background:rgba(139,92,246,0.1);color:var(--purple);border:none;padding:4px 8px;border-radius:6px;font-size:12px;cursor:pointer">Detay</button></td></tr>`;
-    }).join(''):`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">Randevu bulunamadı</td></tr>`)+'</tbody>';
+      const st=a.staff_id?getStaff(a.staff_id):null;
+      return `<tr><td style="font-weight:600">${a.customer_name}</td><td>${svc.name||'-'}</td><td>${st?`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:${st.color};display:inline-block"></span>${st.name}</span>`:'-'}</td><td>${fmtDate(a.date)}</td><td>${a.time}</td><td><span class="status-badge ${sCls[a.status]}">${sLabel[a.status]}</span></td><td style="color:var(--muted)">${a.customer_phone}</td><td><button onclick="openApptDetail('${a.id}')" style="background:rgba(139,92,246,0.1);color:var(--purple);border:none;padding:4px 8px;border-radius:6px;font-size:12px;cursor:pointer">Detay</button></td></tr>`;
+    }).join(''):`<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px">Randevu bulunamadı</td></tr>`)+'</tbody>';
 }
 
 // ===== APPOINTMENT DETAIL MODAL =====
 function openApptDetail(id){
   const a=appointments.find(x=>x.id===id);if(!a)return;
   const svc=getService(a.service_id);
+  const st=a.staff_id?getStaff(a.staff_id):null;
   const sCls={onaylandi:'badge-onaylandi',beklemede:'badge-beklemede',iptal:'badge-iptal'};
   const sLabel={onaylandi:'Onaylandı',beklemede:'Beklemede',iptal:'İptal'};
   document.getElementById('apptModalTitle').textContent='Randevu Detayı';
@@ -1002,6 +1151,7 @@ function openApptDetail(id){
       <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:13px">Telefon</span><span style="font-weight:600">${a.customer_phone}</span></div>
       ${a.customer_email?`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:13px">E-posta</span><span>${a.customer_email}</span></div>`:''}
       <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:13px">Hizmet</span><span style="font-weight:600">${svc.name||'-'}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:13px">Personel</span><span style="font-weight:600">${st?`<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:${st.color};display:inline-block"></span>${st.name}</span>`:'Atanmadı'}</span></div>
       <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:13px">Tarih & Saat</span><span style="font-weight:600">${fmtDate(a.date)} ${a.time}</span></div>
       <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:13px">Ücret</span><span style="font-weight:600;color:var(--purple)">${fmt(svc.price||0)}</span></div>
       <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:13px">Durum</span><span class="status-badge ${sCls[a.status]}">${sLabel[a.status]}</span></div>
@@ -1037,6 +1187,7 @@ function openNewApptModal(){openNewApptModalPrefilled();}
 function openNewApptModalPrefilled(date='',time=''){
   document.getElementById('apptModalTitle').textContent='Yeni Randevu Ekle';
   const svcOpts=services.filter(s=>s.active).map(s=>`<option value="${s.id}">${s.name} - ${fmt(s.price)}</option>`).join('');
+  const staffOpts='<option value="">Fark Etmez</option>'+staff.filter(s=>s.active).map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
   document.getElementById('apptModalBody').innerHTML=`
     <div class="form-group"><label class="form-label">Müşteri Adı *</label><input type="text" class="form-input" id="na_name" placeholder="Ahmet Yılmaz"></div>
     <div class="form-row">
@@ -1045,11 +1196,14 @@ function openNewApptModalPrefilled(date='',time=''){
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Hizmet *</label><select class="form-input" id="na_svc">${svcOpts}</select></div>
-      <div class="form-group"><label class="form-label">Durum</label><select class="form-input" id="na_status"><option value="onaylandi">Onaylandı</option><option value="beklemede">Beklemede</option></select></div>
+      <div class="form-group"><label class="form-label">Personel</label><select class="form-input" id="na_staff">${staffOpts}</select></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Tarih *</label><input type="date" class="form-input" id="na_date" value="${date||todayStr()}"></div>
       <div class="form-group"><label class="form-label">Saat *</label><input type="time" class="form-input" id="na_time" value="${time}" step="1800"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Durum</label><select class="form-input" id="na_status"><option value="onaylandi">Onaylandı</option><option value="beklemede">Beklemede</option></select></div>
     </div>
     <div class="form-group"><label class="form-label">Notlar</label><textarea class="form-input" id="na_notes" rows="2" style="resize:vertical"></textarea></div>`;
   document.getElementById('apptModalFooter').innerHTML=`
@@ -1064,9 +1218,11 @@ async function saveNewAppt(){
   const date=document.getElementById('na_date').value;
   const time=document.getElementById('na_time').value;
   const svcId=parseInt(document.getElementById('na_svc').value);
+  const staffVal=document.getElementById('na_staff').value;
+  const staffId=staffVal?parseInt(staffVal):null;
   if(!name||!phone||!date||!time){showToast('Zorunlu alanları doldurun.','#ef4444');return;}
-  if(isTaken(date,time)){showToast('Bu saat dolu!','#ef4444');return;}
-  const appt={id:genId(),customer_name:name,customer_phone:phone,customer_email:document.getElementById('na_email').value.trim(),service_id:svcId,date,time,status:document.getElementById('na_status').value,notes:document.getElementById('na_notes').value.trim(),created_at:Date.now()};
+  if(isTaken(date,time,staffId)){showToast('Bu personel bu saatte dolu!','#ef4444');return;}
+  const appt={id:genId(),customer_name:name,customer_phone:phone,customer_email:document.getElementById('na_email').value.trim(),service_id:svcId,staff_id:staffId,date,time,status:document.getElementById('na_status').value,notes:document.getElementById('na_notes').value.trim(),created_at:Date.now()};
   const {error}=await sb.from('appointments').insert(appt);
   if(error){showToast('Hata: '+error.message,'#ef4444');return;}
   appointments.push(appt);
@@ -1194,6 +1350,91 @@ async function changePassword(){
   showToast('Şifre güncellendi.');
 }
 
+// ===== STAFF ADMIN =====
+function renderStaffGrid(){
+  const grid=document.getElementById('staffGrid');
+  if(!staff.length){grid.innerHTML='<p style="color:var(--muted);font-size:13px">Henüz personel eklenmedi.</p>';return;}
+  grid.innerHTML=staff.map(s=>`
+    <div class="service-mgmt-card">
+      <div class="staff-avatar" style="background:${s.color};width:40px;height:40px;min-width:40px;font-size:15px">${s.name.charAt(0).toUpperCase()}</div>
+      <div class="service-mgmt-info">
+        <div class="service-mgmt-name">${s.name}</div>
+        <div class="service-mgmt-meta">${s.working_start||'09:00'} - ${s.working_end||'19:00'}</div>
+      </div>
+      <div class="service-mgmt-actions">
+        <button class="toggle-btn ${s.active?'on':''}" onclick="toggleStaff(${s.id},${!s.active})"></button>
+        <button class="btn btn-ghost btn-sm" onclick="openStaffModal(${s.id})"><svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="btn btn-red btn-sm" onclick="deleteStaff(${s.id})"><svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>
+      </div>
+    </div>`).join('');
+}
+
+function openStaffModal(id=null){
+  editingStaffId=id;
+  const s=id?staff.find(x=>x.id===id):null;
+  document.getElementById('staffModalTitle').textContent=id?'Personel Düzenle':'Yeni Personel';
+  document.getElementById('stName').value=s?.name||'';
+  document.getElementById('st_start').value=s?.working_start||'09:00';
+  document.getElementById('st_end').value=s?.working_end||'19:00';
+  document.getElementById('st_lstart').value=s?.lunch_start||'13:00';
+  document.getElementById('st_lend').value=s?.lunch_end||'14:00';
+  selectedStaffColor=s?.color||'#3b82f6';
+  document.getElementById('staffColorPicker').innerHTML=COLORS.map(c=>`<div onclick="selectStaffColor('${c}')" style="width:28px;height:28px;border-radius:50%;background:${c};cursor:pointer;border:3px solid ${c===selectedStaffColor?'white':'transparent'};transition:all 0.15s" id="scp_${c.replace('#','')}"></div>`).join('');
+  const workDays=(s?.working_days||'1,2,3,4,5,6').split(',').map(Number);
+  const dayNames=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+  document.getElementById('staffDaysGrid').innerHTML=dayNames.map((d,i)=>`
+    <button class="day-toggle ${workDays.includes(i+1)?'on':''}" id="swd_${i+1}" onclick="toggleStaffDay(${i+1})">${d}</button>`).join('');
+  document.getElementById('staffModal').classList.add('open');
+}
+
+function selectStaffColor(c){
+  selectedStaffColor=c;
+  document.querySelectorAll('#staffColorPicker div').forEach(d=>d.style.borderColor='transparent');
+  const el=document.getElementById('scp_'+c.replace('#',''));if(el)el.style.borderColor='white';
+}
+
+function toggleStaffDay(n){
+  const btn=document.getElementById('swd_'+n);btn.classList.toggle('on');
+}
+
+async function saveStaff(){
+  const name=document.getElementById('stName').value.trim();
+  if(!name){showToast('Ad zorunlu.','#ef4444');return;}
+  const on=[];for(let i=1;i<=7;i++){if(document.getElementById('swd_'+i).classList.contains('on'))on.push(i);}
+  const data={
+    name,color:selectedStaffColor,active:true,
+    working_start:document.getElementById('st_start').value,
+    working_end:document.getElementById('st_end').value,
+    lunch_start:document.getElementById('st_lstart').value,
+    lunch_end:document.getElementById('st_lend').value,
+    working_days:on.join(',')
+  };
+  if(editingStaffId){
+    await sb.from('staff').update(data).eq('id',editingStaffId);
+    const i=staff.findIndex(x=>x.id===editingStaffId);if(i>-1)staff[i]={...staff[i],...data};
+  } else {
+    data.sort_order=staff.length+1;
+    const {data:ins}=await sb.from('staff').insert(data).select().single();
+    if(ins)staff.push(ins);
+  }
+  closeModal('staffModal');renderStaffGrid();
+  showToast(editingStaffId?'Personel güncellendi.':'Personel eklendi.');
+}
+
+async function toggleStaff(id,val){
+  await sb.from('staff').update({active:val}).eq('id',id);
+  const s=staff.find(x=>x.id===id);if(s)s.active=val;
+  renderStaffGrid();
+}
+
+async function deleteStaff(id){
+  if(!confirm('Bu personeli silmek istediğinize emin misiniz?'))return;
+  await sb.from('staff').delete().eq('id',id);
+  staff=staff.filter(x=>x.id!==id);
+  renderStaffGrid();
+  showToast('Personel silindi.');
+}
+
 // ===== ADMIN VIEW SWITCHER =====
 function showAdminView(name,el){
   document.querySelectorAll('.admin-view').forEach(v=>v.classList.remove('active'));
@@ -1205,6 +1446,7 @@ function showAdminView(name,el){
   else if(name==='calendar')renderWeekCalendar();
   else if(name==='appointments')renderApptList();
   else if(name==='services')renderServicesGrid();
+  else if(name==='staff')renderStaffGrid();
   else if(name==='settings')renderSettingsForm();
 }
 
